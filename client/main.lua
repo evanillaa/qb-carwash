@@ -1,7 +1,3 @@
-QBCore = nil
-
--- Code
-
 local washingVehicle = false
 
 function DrawText3Ds(x, y, z, text)
@@ -20,11 +16,6 @@ function DrawText3Ds(x, y, z, text)
 end
 
 Citizen.CreateThread(function()
-    while QBCore == nil do
-		TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
-		Citizen.Wait(0)
-    end
-    
     while true do
         local inRange = false
         local PlayerPed = PlayerPedId()

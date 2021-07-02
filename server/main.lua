@@ -1,12 +1,3 @@
-QBCore = nil
-TriggerEvent('QBCore:GetObject', function(obj) QBCore = obj end)
-
-local ItemList = {
-    ["cash"] = "cash"
-}
-
--- Code
-
 RegisterServerEvent('qb-carwash:server:washCar')
 AddEventHandler('qb-carwash:server:washCar', function()
     local src = source
