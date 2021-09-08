@@ -35,7 +35,7 @@ Citizen.CreateThread(function()
                         if Driver == PlayerPed then
                             if not washingVehicle then
                                 DrawText3Ds(Config.Locations[k]["coords"]["x"], Config.Locations[k]["coords"]["y"], Config.Locations[k]["coords"]["z"], '~g~E~w~ - Washing car ($'..Config.DefaultPrice..')')
-                                if IsControlJustPressed(0, Keys["E"]) then
+                                if IsControlJustPressed(0, 38) then
                                     TriggerServerEvent('qb-carwash:server:washCar')
                                 end
                             else
