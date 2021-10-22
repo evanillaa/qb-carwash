@@ -54,16 +54,29 @@ Citizen.CreateThread(function()
         Citizen.Wait(3)
     end
 end)
-
 RegisterNetEvent('qb-carwash:client:washCar')
 AddEventHandler('qb-carwash:client:washCar', function()
     local PlayerPed = PlayerPedId()
     local PedVehicle = GetVehiclePedIsIn(PlayerPed)
     local Driver = GetPedInVehicleSeat(PedVehicle, -1)
+    local coords = GetEntityCoords(GetVehiclePedIsIn(PlayerPed))
 
     washingVehicle = true
 
-    QBCore.Functions.Progressbar("search_cabin", "Vehicle is being washed ..", math.random(4000, 8000), false, true, {
+    if not HasNamedPtfxAssetLoaded("core") then
+        RequestNamedPtfxAsset("core")
+        while not HasNamedPtfxAssetLoaded("core") do
+            Wait(1)
+        end
+    end
+    UseParticleFxAssetNextCall("core")
+    particles = StartParticleFxLoopedAtCoord("ent_amb_waterfall_splash_p", coords.x, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, false, false, false)
+    UseParticleFxAssetNextCall("core")
+    particles2 = StartParticleFxLoopedAtCoord("ent_amb_waterfall_splash_p", coords.x + 1, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, false, false, false)
+    UseParticleFxAssetNextCall("core")
+    particles3 = StartParticleFxLoopedAtCoord("ent_amb_waterfall_splash_p", coords.x - 1, coords.y, coords.z, 0.0, 0.0, 0.0, 1.0, false, false, false, false)
+
+    QBCore.Functions.Progressbar("washed", "Vehicle is being washed ..", math.random(4000, 8000), false, true, {
         disableMovement = true,
         disableCarMovement = true,
         disableMouse = false,
@@ -73,8 +86,12 @@ AddEventHandler('qb-carwash:client:washCar', function()
         SetVehicleUndriveable(PedVehicle, false)
         WashDecalsFromVehicle(PedVehicle, 1.0)
         washingVehicle = false
+        StopParticleFxLooped(particles, 0)
+        StopParticleFxLooped(particles2, 0)
+        StopParticleFxLooped(particles3, 0)
+        QBCore.Functions.Notify("Your vehicle is clean.", "success")
     end, function() -- Cancel
-        QBCore.Functions.Notify("Washing canceled ..", "error")
+        QBCore.Functions.Notify("Washing cancelled.", "error")
         washingVehicle = false
     end)
 end)
